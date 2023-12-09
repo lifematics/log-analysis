@@ -1,0 +1,6 @@
+dir=`pwd`
+base=`basename $dir`
+YMD=${base#D=}
+echo date=\"$YMD\" > ${dir}/T=4/_story/date.ws
+cd ${dir}/T=4/_story; cat date.ws ci-ckan-graph.ws > ckan-analysis.ws
+cd ${dir}/T=4/_story; cat ckan-analysis.ws | wolframscript

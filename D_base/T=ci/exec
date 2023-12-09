@@ -1,0 +1,17 @@
+while read file;
+do
+grep log\.ci000 ../$file |\
+grep -v 'path\":\"/favicon.ico' |\
+grep -v 'path\":\"/static' |\
+grep -v 'path\":\"/ga' |\
+grep -v 'path\":\"/opensearch' |\
+grep -v 'path\":\"/related_data' |\
+grep -v 'path\":\"/css/' |\
+grep -v 'path\":\"/.*\.js$' |\
+grep -v 'path\":\"/.*\.svg$' |\
+grep -v 'path\":\"/.*css$' |\
+grep -v 'path\":\"/.*waff2' |\
+grep -v 'Go-http-client' |\
+grep -v 'agent\":\"BaiduSpider'
+#grep -v 'agent\":\"BaiduSpider' > $file.self
+done < ../filenames > self

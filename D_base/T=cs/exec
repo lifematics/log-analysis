@@ -1,0 +1,9 @@
+while read file;
+do
+grep log\.cs[0-9] ../$file |\
+grep \"referer\": |\
+grep \"path\": |\
+grep -v '\"path\":\"/.*hub/.*api' |\
+grep -v '\"path\":\"/.*user/.*api' |\
+grep -v '\"path\":\"/.*img/'
+done < ../filenames > self

@@ -1,0 +1,8 @@
+pwdstr=`pwd`
+datestr=${pwdstr#*=}
+files=`ls log-*.rcoslog*.log`
+filelist=`echo $files|tr ' ' '\n'`
+echo $filelist > filenames
+# echo date=\"$datestr\" > ./T=4/_story/date.ws
+wc $filelist > logfiles.wc
+while read file; do md5 $file; done < filenames > filenames.md5

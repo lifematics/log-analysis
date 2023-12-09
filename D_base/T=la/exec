@@ -1,0 +1,9 @@
+while read file;
+do
+grep log\.la000 ../$file |\
+grep -v Health |\
+grep -v Go-http-client |\
+grep -v agent\":\"BaiduSpider |\
+grep -v 'api.php"' |\
+grep -v aws.ea01
+done < ../filenames > self
