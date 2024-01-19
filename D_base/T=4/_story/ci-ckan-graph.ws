@@ -195,18 +195,19 @@ pickPos["ci"][2] =
     x_ /; x >= 1]];
 (storyGrIdxFlDs3["ci"] = 
    storyGrIdxFlDs2["ci"][[pickPos["ci"][2]]]) // Dimensions
+storyGrIdxFlDs3["ci",date] = storyGrIdxFlDs3["ci"];
 storyGrIdxFlDs3["ci"][[1]]
 savedir = mountdir <> "log/D=" <> date <> "/" <> base["ci"]
 SetDirectory[savedir]
 Directory[]
-Timing[Save["storyGrIdxFlDs3.ci.save", storyGrIdxFlDs3]]
-Timing[Save["storyGrIdxFlDs3.ci.save", toCRID]]
-Timing[Save["ckan.save", ckanName]]
-Timing[Save["ckan.save", ckanCridAC]]
-Timing[Save["ckan.save", ckanCridPLogPosAC]]
-Timing[Save["ckan.save", ckanCridRLogPosAC]]
-Timing[Save["ckan.save", ckanCridPRLogPosAC]]
-Timing[Save["ckan.save", ckanCridPRACQ]]
+Timing[Save["storyGrIdxFlDs3."<>date<>".ci.save", storyGrIdxFlDs3]]
+Timing[Save["storyGrIdxFlDs3."<>date<>".ci.save", toCRID]]
+Timing[Save["ckan."<>date<>".save", ckanName]]
+Timing[Save["ckan."<>date<>".save", ckanCridAC]]
+Timing[Save["ckan."<>date<>".save", ckanCridPLogPosAC]]
+Timing[Save["ckan."<>date<>".save", ckanCridRLogPosAC]]
+Timing[Save["ckan."<>date<>".save", ckanCridPRLogPosAC]]
+Timing[Save["ckan."<>date<>".save", ckanCridPRACQ]]
 (eltbl["ci"] = 
    Table[EdgeList[storyGrIdxFlDs3["ci"][[i]][[3]]], {i, 
      Length[storyGrIdxFlDs3["ci"]]}]) // Dimensions
@@ -390,10 +391,14 @@ Map[toVocGraph[#, vocRl["all:path"]] &,
    Map[MapApply[List, EdgeList[#]] &, 
     ckanGrPRselHLTL["ci"]]) // Dimensions
 ckanELexp = Map[{#[[1, 1]], #[[2, 1]]} &, ckanEL, {2}];
+ckanVocELexp =
+ Map[List[#, ToString[ReplaceAll[#, vocRl["all:path"]]]] &,
+  ckanELexp, {3}];
 expdir = mountdir <> "log/D=" <> date <> "/" <> base["ci"]
 SetDirectory[expdir]
-Export["ckanedgelist.json", ckanELexp]
-Export["graphProperty.xlsx", {logTotal, ckanLogTotal, ckanChainTotal, 
+Export["ckanedgelist" <> "." <>date<> ".json", ckanELexp]
+Export["ckanvocedgelist" <> "." <>date<> ".json",ckanVocELexp]
+Export["graphProperty."<>date<>".xlsx", {logTotal, ckanLogTotal, ckanChainTotal, 
   ckanGraphSummary}]
 end = AbsoluteTime[Date[]]
 end - start
