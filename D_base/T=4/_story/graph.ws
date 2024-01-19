@@ -1,6 +1,7 @@
 dirstr = Directory[]
 mountdir = StringReplace[dirstr,RegularExpression["log/D=[0-9]+.*"]->""]
 (*mountdir = "/Volumes/IODATA/NII/togo-log/rcoslogs/"*)
+vocdir = mountdir <> "voc"
 
 Print["- preproc -"]
 case = {"ci", "cs", "la", "wk"}
@@ -11,17 +12,23 @@ base["la"] = "T=la"
 base["wk"] = "T=wk"
 base["all"] = "T=4"
 
+Print["- file stat -"]
 fileliststr = 
  Import[mountdir <> "log/D=" <> date <> "/" <> "filenames", "String"]
 filelist = StringSplit[fileliststr]
 logwc = Import[mountdir <> "log/D=" <> date <> "/logfiles.wc", 
   "String"]
+Print["- ckan file load -"]
 ckanfile = 
  mountdir <> "crid/CIRDEV-1067_crid_list/ckan_product_crid_list.txt"
 ckanSt = Import[ckanfile, "String"];
 (ckanName = StringSplit[ckanSt, "\n"]) // Dimensions
 (ckanCridAC = 
    Apply[Association, Map[# -> # &, ckanName]]) // Dimensions
+Print["- voc file load -"]
+vocRlFiles = FileNames[vocdir <> "/*.wl"]
+vocRlList = Map[Get, vocRlFiles];
+(vocRl["all:path"] = Apply[Join, vocRlList]) // Dimensions
 
 directedConnectedGraphComponent[g_, v_] := 
  Module[{vAll, vOther, addEdge},
@@ -353,12 +360,23 @@ pickPos[4][1] =
 pickPos[4][2] = 
   Flatten[Position[Map[EdgeCount[#[[3]]] &, storyGrIdxFlDs2[4]], 
     x_ /; x >= 1]];
-(storyGrIdxFlDs3[4] = 
+(storyGrIdxFlDs3[4][date] = 
    storyGrIdxFlDs2[4][[pickPos[4][2]]]) // Dimensions
 
-Print["-- save --"]
+Print["-- edges --"]
+(eltbl[4] =
+   Table[EdgeList[storyGrIdxFlDs3[4][date][[i]][[3]]],
+     {i, Length[storyGrIdxFlDs3[4][date]]}]) // Dimensions
+(eltblList[4] = Map[Apply[List, #] &, eltbl[4], {2}]) // Dimensions
+
+Print["-- voc edges --"]
+vocELexp[4] =
+ Map[List[#, ToString[ReplaceAll[#, vocRl["all:path"]]]] &,
+  eltblList[4], {3}];
+
+Print["-- save / export --"]
 savedir = mountdir <> "log/D=" <> date <> "/T=4/_story"
-savefile = "storyGrIdxFlDs3.save"
+savefile = "storyGrIdxFlDs3."<>date<>".save"
 savetarget=savedir<>"/"<>savefile
 Run["rm "<>savetarget]
 Timing[Save[savetarget,storyGrIdxFlDs3]]
@@ -376,5 +394,7 @@ Timing[Save[savetarget,ckanCridPLogPosAC]]
 Timing[Save[savetarget,ckanCridRLogPosAC]]
 Timing[Save[savetarget,ckanCridPRLogPosAC]]
 Timing[Save[savetarget,ckanCridPRACQ]]
+Timing[Export[savedir <> "/edgelist-4" <> "." <> date <> ".json", eltblList[4]]]
+Timing[Export[savedir <> "/vocedgelist-4" <> "." <> date <> ".json", vocELexp[4]]]
 
 Print["END:graph.ws"]
