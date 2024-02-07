@@ -1,131 +1,136 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 {x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/hub/home.*"]] -> voc["top"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/hub/home.*"]] -> 
+  voc["cs:*,view,top"], 
  x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/hub/{1,2}"]] -> voc["top"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/hub/{1,2}"]] -> voc["cs:*,view,top"], 
  x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/{1,2}"]] -> voc["top"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/{1,2}"]] -> voc["cs:*,view,top"], 
  x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/hub/token.*"]] -> voc["token"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/hub/token.*"]] -> 
+  voc["cs:*,confirm,token"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/rstudio/.*"]] -> 
-  voc["rstudio"], 
+  voc["cs:resercher,develop,rstudio"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/clusters.*"]] -> 
-  voc["cluster"], 
+  voc["cs:researcher,develop,cluster"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/notebooks.*"]] -> 
-  voc["notebook"], 
+  voc["cs:researcher,develop,notebook"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/terminals.*"]] -> 
-  voc["terminal"], 
+  voc["cs:researcher,develop,terminal"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/tree.*"]] -> 
-  voc["item_list"], 
+  voc["cs:researcher,confirm,item_list"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/shiny.*"]] -> 
-  voc["item_list"], 
+  voc["cs:researcher,confirm,item_list"], 
  x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/api/.*"]] -> voc["api"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/api/.*"]] -> voc["cs:*,request,api"], 
  x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/auth/.*"]] -> voc["authenticate"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/auth/.*"]] -> 
+  voc["cs:*,authenticate,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/Shibboleth.sso/.*"]] -> 
-  voc["authenticate"], 
+  voc["cs:*,authenticate,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/hub/login.*"]] -> 
-  voc["authenticate"], 
+  voc["cs:*,authenticate,"], 
  x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/login.*"]] -> voc["authenticate"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/login.*"]] -> 
+  voc["cs:*,authenticate,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/suite-auth/login"]] -> 
-  voc["authenticate"], 
+  voc["cs:*,authenticate,"], 
  x_ /; StringMatchQ[x, RegularExpression[
-     "https://jupyter.cs.rcos.nii.ac.jp/user/login.*"]] -> voc["login"], 
+     "https://jupyter.cs.rcos.nii.ac.jp/user/login.*"]] -> 
+  voc["cs:*,login,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/hub/static.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/custom/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/static/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/nbextensions/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/lab.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/v2/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/f{0,1}ckeditor/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/static/base/images.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/rdm-binderhub/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/server-proxy/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/offlinenotebook/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/files/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/tree/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/uuid/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*/lc/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/build/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/hub/logo"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/webtools/.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/version.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/arcgis.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/mifs.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/functionRouter.*"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/favicon.ico"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*\\.ico"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/hub/.*\\.ico"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*\\.svg"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/.*\\.svg"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/user/.*\\.txt"]] -> 
-  voc["internalsystem_access"], 
+  voc["cs:system,internalsystem_access,"], 
  x_ /; StringMatchQ[x, RegularExpression[
      "https://jupyter.cs.rcos.nii.ac.jp/service.*"]] -> 
-  voc["additional_service"]}
+  voc["cs:*,confirm,additional_service"]}
