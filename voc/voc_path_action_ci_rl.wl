@@ -26,6 +26,9 @@
  x_ /; StringMatchQ[x, RegularExpression[
      "https://cir.nii.ac.jp/crid/[0-9]+\\?.*"]] -> 
   voc["ci:*,confirm,detail"], 
+ x_ /; StringMatchQ[x, RegularExpression[
+     "https://cir.nii.ac.jp/naid/[0-9]+\\?.*"]] -> 
+  voc["ci:*,confirm,detail"], 
  x_ /; StringMatchQ[x, RegularExpression["https://auth.cir.nii.ac.jp/.*"]] -> 
   voc["ci:*,authenticate,"], 
  x_ /; StringMatchQ[x, RegularExpression[
