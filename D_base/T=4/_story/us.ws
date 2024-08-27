@@ -131,3 +131,147 @@ Complement[vocSubject["all"], APvocSubject["all"]]
 Complement[vocActivity["all"], APvocActivity["all"]]
 Complement[vocSubject["all"], APvocSubject["all"]]
 
+(* User story *)
+Print["User story"]
+(** data **)
+Print["User story: data"]
+basedir <> "2022NII-RDCユーザーストーリー・機能対応表_V2.1.xlsx"
+userStoryXlsx = 
+  Import[basedir <> "2022NII-RDCユーザーストーリー・機能対応表_V2.1.xlsx"];
+userStoryOtlSheet = userStoryXlsx[[3]][[2 ;; 190]];
+(userStoryOtl["all"] = 
+   Map[{#[[1]], #[[20]], #[[8]], "rdm:" <> #[[9]], "rdm:" <> #[[11]], 
+      "rdm:" <> #[[13]]} &, userStoryOtlSheet]) // Length
+userStoryOtlHead = userStoryXlsx[[3]][[1]][[{1, 20, 8, 9, 11, 13}]]
+Cases[userStoryOtl["all"], x_ /; x[[2]] == "-"]
+(userStoryOtl["sel"] = 
+   Cases[userStoryOtl["all"], x_ /; x[[2]] != "-"]) // Length
+rdmSubjectToUS["all"] = 
+  Map[{#[[2]], #[[4]] -> #[[1]]} &, userStoryOtl["sel"]];
+rdmActivityToUS["all"] = 
+  Map[{#[[2]], #[[5]] -> #[[1]]} &, userStoryOtl["sel"]];
+rdmObjectToUS["all"] = 
+  Map[{#[[2]], #[[6]] -> #[[1]]} &, userStoryOtl["sel"]];
+rdmSubjectToUS["ci"] = Cases[rdmSubjectToUS["all"], {"ci", __}]
+rdmActivityToUS["ci"] = Cases[rdmActivityToUS["all"], {"ci", __}]
+rdmObjectToUS["ci"] = Cases[rdmObjectToUS["all"], {"ci", __}]
+rdmSubjectToUS["cs"] = Cases[rdmSubjectToUS["all"], {"cs", __}]
+rdmActivityToUS["cs"] = Cases[rdmActivityToUS["all"], {"cs", __}]
+rdmObjectToUS["cs"] = Cases[rdmObjectToUS["all"], {"cs", __}]
+rdmSubjectToUS["la"] = Cases[rdmSubjectToUS["all"], {"la", __}]
+rdmActivityToUS["la"] = Cases[rdmActivityToUS["all"], {"la", __}]
+rdmObjectToUS["la"] = Cases[rdmObjectToUS["all"], {"la", __}]
+rdmSubjectToUS["wk"] = Cases[rdmSubjectToUS["all"], {"wk", __}]
+rdmActivityToUS["wk"] = Cases[rdmActivityToUS["all"], {"wk", __}]
+rdmObjectToUS["wk"] = Cases[rdmObjectToUS["all"], {"wk", __}]
+
+(** Duplicate check**)
+Print["Duplicate check"]
+dupRl[list_] := Module[{car, cdr},
+  car = list[[1]];
+  cdr = list[[2 ;;]];
+  Map[# -> car &, cdr]
+  ]
+userStoryOtl["sel"] // Dimensions
+(Gather[userStoryOtl[
+    "sel"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+(Gather[userStoryOtl[
+    "sel"], #1[[3 ;; 6]] == #2[[3 ;; 6]] &]) // Length
+
+usCount["gr"] = (userStoryOtl["sel", "gr"] = 
+    Cases[userStoryOtl["sel"], {_, "gr", __}]) // Length
+usCount["gr", 
+  "uniq"] = (userStoryOtlGt["sel", "gr"] = 
+    Gather[userStoryOtl["sel", 
+      "gr"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+usDupPos["gr"] = 
+ Flatten[Position[Map[Length, userStoryOtlGt["sel", "gr"]], 
+   x_ /; x != 1]]
+usDupList["gr"] = 
+ Map[#[[1]] &, userStoryOtlGt["sel", "gr"][[usDupPos["gr"]]], {2}]
+usDupRl["gr"] = Map[dupRl[#] &, usDupList["gr"]]
+
+usCount["dg"] = (userStoryOtl["sel", "dg"] = 
+    Cases[userStoryOtl["sel"], {_, "dg", __}]) // Length
+usCount["dg", 
+  "uniq"] = (userStoryOtlGt["sel", "dg"] = 
+    Gather[userStoryOtl["sel", 
+      "dg"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+usDupPos["dg"] = 
+ Flatten[Position[Map[Length, userStoryOtlGt["sel", "dg"]], 
+   x_ /; x != 1]]
+usDupList["dg"] = 
+ Map[#[[1]] &, userStoryOtlGt["sel", "dg"][[usDupPos["dg"]]], {2}]
+usDupRl["dg"] = Map[dupRl[#] &, usDupList["dg"]]
+
+usCount["dp"] = (userStoryOtl["sel", "dp"] = 
+    Cases[userStoryOtl["sel"], {_, "dp", __}]) // Length
+usCount["dp", 
+  "uniq"] = (userStoryOtlGt["sel", "dp"] = 
+    Gather[userStoryOtl["sel", 
+      "dp"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+usDupPos["dp"] = 
+ Flatten[Position[Map[Length, userStoryOtlGt["sel", "dp"]], 
+   x_ /; x != 1]]
+usDupList["dp"] = 
+ Map[#[[1]] &, userStoryOtlGt["sel", "dp"][[usDupPos["dp"]]], {2}]
+usDupRl["dp"] = Map[dupRl[#] &, usDupList["dp"]]
+
+usCount["ci"] = (userStoryOtl["sel", "ci"] = 
+    Cases[userStoryOtl["sel"], {_, "ci", __}]) // Length
+usCount["ci", 
+  "uniq"] = (userStoryOtlGt["sel", "ci"] = 
+    Gather[userStoryOtl["sel", 
+      "ci"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+usDupPos["ci"] = 
+ Flatten[Position[Map[Length, userStoryOtlGt["sel", "ci"]], 
+   x_ /; x != 1]]
+usDupList["ci"] = 
+ Map[#[[1]] &, userStoryOtlGt["sel", "ci"][[usDupPos["ci"]]], {2}]
+usDupRl["ci"] = Map[dupRl[#] &, usDupList["ci"]]
+
+usCount["cs"] = (userStoryOtl["sel", "cs"] = 
+    Cases[userStoryOtl["sel"], {_, "cs", __}]) // Length
+usCount["cs", 
+  "uniq"] = (userStoryOtlGt["sel", "cs"] = 
+    Gather[userStoryOtl["sel", 
+      "cs"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+usDupPos["cs"] = 
+ Flatten[Position[Map[Length, userStoryOtlGt["sel", "cs"]], 
+   x_ /; x != 1]]
+usDupList["cs"] = 
+ Map[#[[1]] &, userStoryOtlGt["sel", "cs"][[usDupPos["cs"]]], {2}]
+usDupRl["cs"] = Map[dupRl[#] &, usDupList["cs"]]
+
+usCount["la"] = (userStoryOtl["sel", "la"] = 
+    Cases[userStoryOtl["sel"], {_, "la", __}]) // Length
+usCount["la", 
+  "uniq"] = (userStoryOtlGt["sel", "la"] = 
+    Gather[userStoryOtl["sel", 
+      "la"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+usDupPos["la"] = 
+ Flatten[Position[Map[Length, userStoryOtlGt["sel", "la"]], 
+   x_ /; x != 1]]
+usDupList["la"] = 
+ Map[#[[1]] &, userStoryOtlGt["sel", "la"][[usDupPos["la"]]], {2}]
+usDupRl["la"] = Map[dupRl[#] &, usDupList["la"]]
+
+usCount["wk"] = (userStoryOtl["sel", "wk"] = 
+    Cases[userStoryOtl["sel"], {_, "wk", __}]) // Length
+usCount["wk", 
+  "uniq"] = (userStoryOtlGt["sel", "wk"] = 
+    Gather[userStoryOtl["sel", 
+      "wk"], #1[[2 ;; 6]] == #2[[2 ;; 6]] &]) // Length
+usDupPos["wk"] = 
+ Flatten[Position[Map[Length, userStoryOtlGt["sel", "wk"]], 
+   x_ /; x != 1]]
+usDupList["wk"] = 
+ Map[#[[1]] &, userStoryOtlGt["sel", "wk"][[usDupPos["wk"]]], {2}]
+usDupRl["wk"] = Map[dupRl[#] &, usDupList["wk"]]
+
+usDupRl["All"] = 
+ Flatten[{usDupRl["gr"], usDupRl["dp"], usDupRl["dg"], usDupRl["ci"], 
+   usDupRl["cs"], usDupRl["la"], usDupRl["wk"], {"番号" -> "重複"}}]
+
+
+
