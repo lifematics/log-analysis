@@ -1,3 +1,4 @@
+Print["START"]
 (* Setting *)
 Print["Setting"]
 basedir = "/Volumes/home/NII/togo-log/rcoslogs/log/"
@@ -630,3 +631,235 @@ nonappUS["wk"] =
     matchSinLog["wk", date], matchVinLog["wk", date], 
     matchOinLog["wk", date]}) // TableForm
 
+(* match: large table *)
+otlSVOMatchS[usS_, rdmotlS_] := 
+ If[rdmotlS == "--", "S", If[usS == rdmotlS, "S", "no-match"], 
+  "no-match"]
+otlSVOMatchV[usV_, rdmotlV_] := If[usV == rdmotlV, "V", "no-match"]
+otlSVOMatchO[usO_, rdmotlO_] := If[usO == rdmotlO, "O", "no-match"]
+otlSVOMatchTri[us_, rdmotl_] :=
+ {otlSVOMatchS[us[[4]], rdmotl[[1, 2]]],
+  otlSVOMatchV[us[[5]], rdmotl[[1, 3]]],
+  otlSVOMatchO[us[[6]], rdmotl[[1, 4]]]
+  }
+USrdmOtlMatchTri["ci"] = 
+  Outer[otlSVOMatchTri, userStoryOtl["sel", "ci"], rdmOtlQTly["ci"], 
+   1];
+(RDMvsUSTri["ci"] = 
+   MapThread[
+     List, {Join[{{}, {}}, userStoryOtl["sel", "ci"]], 
+      Join[rdmOtlQTly["ci"] // Transpose, USrdmOtlMatchTri["ci"]]}] //
+     Transpose) // TableForm
+USrdmOtlMatchTri["cs"] = 
+  Outer[otlSVOMatchTri, userStoryOtl["sel", "cs"], rdmOtlQTly["cs"], 
+   1];
+(RDMvsUSTri["cs"] = 
+   MapThread[
+     List, {Join[{{}, {}}, userStoryOtl["sel", "cs"]], 
+      Join[rdmOtlQTly["cs"] // Transpose, USrdmOtlMatchTri["cs"]]}] //
+     Transpose) // TableForm
+USrdmOtlMatchTri["la"] = 
+  Outer[otlSVOMatchTri, userStoryOtl["sel", "la"], rdmOtlQTly["la"], 
+   1];
+(RDMvsUSTri["la"] = 
+   MapThread[
+     List, {Join[{{}, {}}, userStoryOtl["sel", "la"]], 
+      Join[rdmOtlQTly["la"] // Transpose, USrdmOtlMatchTri["la"]]}] //
+     Transpose) // TableForm
+USrdmOtlMatchTri["wk"] = 
+  Outer[otlSVOMatchTri, userStoryOtl["sel", "wk"], rdmOtlQTly["wk"], 
+   1];
+(RDMvsUSTri["wk"] = 
+   MapThread[
+     List, {Join[{{}, {}}, userStoryOtl["sel", "wk"]], 
+      Join[rdmOtlQTly["wk"] // Transpose, USrdmOtlMatchTri["wk"]]}] //
+     Transpose) // TableForm
+basedir <> "D=" <> date <> "/T=4/_story/" <> "RDMvsUS_Match_Tbl" <> \
+date <> ".json"
+basedir <> "D=" <> date <> "/T=4/_story/" <> "RDMvsUS_Match_Tbl" <> \
+date <> "_ci.pdf"
+basedir <> "D=" <> date <> "/T=4/_story/" <> "RDMvsUS_Match_Tbl" <> \
+date <> "_cs.pdf"
+basedir <> "D=" <> date <> "/T=4/_story/" <> "RDMvsUS_Match_Tbl" <> \
+date <> "_la.pdf"
+basedir <> "D=" <> date <> "/T=4/_story/" <> "RDMvsUS_Match_Tbl" <> \
+date <> "_wk.pdf"
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> 
+  "RDMvsUS_Match_Tbl" <> date <> ".json", {RDMvsUSTri["ci"], 
+  RDMvsUSTri["cs"], RDMvsUSTri["la"], RDMvsUSTri["wk"]}]
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> 
+  "RDMvsUS_Match_Tbl" <> date <> "_ci.pdf", 
+ TableForm[RDMvsUSTri["ci"]]]
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> 
+  "RDMvsUS_Match_Tbl" <> date <> "_cs.pdf", 
+ TableForm[RDMvsUSTri["cs"]]]
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> 
+  "RDMvsUS_Match_Tbl" <> date <> "_la.pdf", 
+ TableForm[RDMvsUSTri["la"]]]
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> 
+  "RDMvsUS_Match_Tbl" <> date <> "_wk.pdf", 
+ TableForm[RDMvsUSTri["wk"]]]
+
+(* Appearrance of us to log *)
+userStoryOtlHead
+userStoryOtlMatchHead = 
+ Join[userStoryOtlHead, {"S-exist", "V-exist", "O-exist"}]
+addMatch["gr"] = 
+ Table["未調査", {Length[userStoryOtl["sel", "gr"]]}, {3}]
+(userStoryOtlMatch["gr", date] = 
+   Table[Join[userStoryOtl["sel", "gr"][[n]], 
+     addMatch["gr"][[n]]], {n, 
+     Length[userStoryOtl["sel", "gr"]]}]) // Dimensions
+addMatch["dg"] = 
+  Table["未調査", {Length[userStoryOtl["sel", "dg"]]}, {3}];
+(userStoryOtlMatch["dg", date] = 
+   Table[Join[userStoryOtl["sel", "dg"][[n]], 
+     addMatch["dg"][[n]]], {n, 
+     Length[userStoryOtl["sel", "dg"]]}]) // Dimensions
+addMatch["dp"] = 
+  Table["未調査", {Length[userStoryOtl["sel", "dp"]]}, {3}];
+(userStoryOtlMatch["dp", date] = 
+   Table[Join[userStoryOtl["sel", "dp"][[n]], 
+     addMatch["dp"][[n]]], {n, 
+     Length[userStoryOtl["sel", "dp"]]}]) // Dimensions
+addMatch["ci"] = 
+ Transpose[{matchSinLog["ci", date], matchVinLog["ci", date], 
+   matchOinLog["ci", date]}]
+(userStoryOtlMatch["ci", date] = 
+   Table[Join[userStoryOtl["sel", "ci"][[n]], 
+     addMatch["ci"][[n]]], {n, 
+     Length[userStoryOtl["sel", "ci"]]}]) // Dimensions
+addMatch["cs"] = 
+ Transpose[{matchSinLog["cs", date], matchVinLog["cs", date], 
+   matchOinLog["cs", date]}]
+(userStoryOtlMatch["cs", date] = 
+   Table[Join[userStoryOtl["sel", "cs"][[n]], 
+     addMatch["cs"][[n]]], {n, 
+     Length[userStoryOtl["sel", "cs"]]}]) // Dimensions
+addMatch["la"] = 
+ Transpose[{matchSinLog["la", date], matchVinLog["la", date], 
+   matchOinLog["la", date]}]
+(userStoryOtlMatch["la", date] = 
+  Table[Join[userStoryOtl["sel", "la"][[n]], addMatch["la"][[n]]], {n,
+     Length[userStoryOtl["sel", "la"]]}])
+addMatch["wk"] = 
+  Transpose[{matchSinLog["wk", date], matchVinLog["wk", date], 
+    matchOinLog["wk", date]}];
+(userStoryOtlMatch["wk", date] = 
+  Table[Join[userStoryOtl["sel", "wk"][[n]], addMatch["wk"][[n]]], {n,
+     Length[userStoryOtl["sel", "wk"]]}])
+(userStoryOtlMatch["all", date] = Join[
+    {userStoryOtlMatchHead},
+    userStoryOtlMatch["gr", date],
+    userStoryOtlMatch["dg", date],
+    userStoryOtlMatch["dp", date],
+    userStoryOtlMatch["ci", date],
+    userStoryOtlMatch["cs", date],
+    userStoryOtlMatch["la", date],
+    userStoryOtlMatch["wk", date]
+    ]) // Dimensions
+(dupID = 
+  Map[#[[1]] /. usDupRl["All"] &, userStoryOtlMatch["all", date]])
+(userStoryOtlMatch["all", "dup", date] = 
+   MapThread[
+    Append, {userStoryOtlMatch["all", date], dupID}]) // TableForm
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> 
+  "userStoryOtlMatch_" <> date <> ".xlsx", 
+ userStoryOtlMatch["all", "dup", date]]
+
+(* triple which does note appear in us *)
+nomatchSVOcount["ci"] = 
+ Map[Count[#, "no-match"] &, Transpose[USrdmOtlMatchTri["ci"]], {2}]
+nomatchLogpos["ci"] = 
+ Flatten[Position[
+   Map[Min, 
+    Map[Count[#, "no-match"] &, 
+     Transpose[USrdmOtlMatchTri["ci"]], {2}]], x_ /; x > 0]]
+nomatchLogrdmTri["ci"] = rdmOtlQTly["ci"][[nomatchLogpos["ci"]]]
+nomatchSVOcount["cs"] = 
+ Map[Count[#, "no-match"] &, Transpose[USrdmOtlMatchTri["cs"]], {2}]
+nomatchLogpos["cs"] = 
+ Flatten[Position[
+   Map[Min, 
+    Map[Count[#, "no-match"] &, 
+     Transpose[USrdmOtlMatchTri["cs"]], {2}]], x_ /; x > 0]]
+nomatchLogrdmTri["cs"] = rdmOtlQTly["cs"][[nomatchLogpos["cs"]]]
+nomatchSVOcount["la"] = 
+ Map[Count[#, "no-match"] &, Transpose[USrdmOtlMatchTri["la"]], {2}]
+nomatchLogpos["la"] = 
+ Flatten[Position[
+   Map[Min, 
+    Map[Count[#, "no-match"] &, 
+     Transpose[USrdmOtlMatchTri["la"]], {2}]], x_ /; x > 0]]
+nomatchLogrdmTri["la"] = rdmOtlQTly["la"][[nomatchLogpos["la"]]]
+nomatchSVOcount["wk"] = 
+ Map[Count[#, "no-match"] &, Transpose[USrdmOtlMatchTri["wk"]], {2}]
+nomatchLogpos["wk"] = 
+ Flatten[Position[
+   Map[Min, 
+    Map[Count[#, "no-match"] &, 
+     Transpose[USrdmOtlMatchTri["wk"]], {2}]], x_ /; x > 0]]
+nomatchLogrdmTri["wk"] = rdmOtlQTly["wk"][[nomatchLogpos["wk"]]]
+nomatchLogrdmTri["all"] = 
+ Join[nomatchLogrdmTri["ci"], nomatchLogrdmTri["cs"], 
+  nomatchLogrdmTri["la"], nomatchLogrdmTri["wk"]]
+otlOnlyLogHead2 = {"基盤", "S", "V", "O"}
+otlOnlyLogFooter = {"", "", "", "none:想定なし / UD:rdm-ontologyに定義なし"}
+(otlOnlyLogTbl["all"] = 
+   Append[Prepend[Map[#[[1]] &, nomatchLogrdmTri["all"]], 
+     otlOnlyLogHead2], otlOnlyLogFooter]) // TableForm
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> "otlOnlyLogTbl_" <>
+   date <> ".xlsx", otlOnlyLogTbl["all"]]
+
+(* US which does not appear in log *)
+(noMatchUS["all"] = 
+   Join[nonappUS["ci"], nonappUS["cs"], nonappUS["la"], 
+    nonappUS["wk"]]) // TableForm
+basedir <> "D=" <> date <> "/T=4/_story/" <> "noMatchUS_" <> date <> \
+".xlsx"
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> "noMatchUS_" <> 
+  date <> ".xlsx", noMatchUS["all"]]
+
+(* Summary *)
+rdmTriinlogCount["ci"] = Dimensions[USrdmOtlMatchTri["ci"]][[2]]
+rdmTriinlogCount["cs"] = Dimensions[USrdmOtlMatchTri["cs"]][[2]]
+rdmTriinlogCount["la"] = Dimensions[USrdmOtlMatchTri["la"]][[2]]
+rdmTriinlogCount["wk"] = Dimensions[USrdmOtlMatchTri["wk"]][[2]]
+nomatchLogrdmTri["ci"] // Length
+nomatchLogrdmTri["cs"] // Length
+nomatchLogrdmTri["la"] // Length
+nomatchLogrdmTri["wk"] // Length
+nonappUS["ci"] // Length
+nonappUS["cs"] // Length
+nonappUS["la"] // Length
+nonappUS["wk"] // Length
+usCount["gr"] - usCount["gr", "uniq"]
+usCount["dg"] - usCount["dg", "uniq"]
+usCount["dp"] - usCount["dp", "uniq"]
+usCount["ci"] - usCount["ci", "uniq"]
+usCount["cs"] - usCount["cs", "uniq"]
+usCount["la"] - usCount["la", "uniq"]
+usCount["wk"] - usCount["wk", "uniq"]
+(summaryUS = {{"基盤", "ログから検出されたrdmトリプルの種数"},
+    {"ci", rdmTriinlogCount["ci"]},
+    {"cs", rdmTriinlogCount["cs"]},
+    {"la", rdmTriinlogCount["la"]},
+    {"wk", rdmTriinlogCount["wk"]},
+    {"基盤", "ログに現れるが現行のユーザーストーリー表に現れない(SVOが完全マッチしない)rdmトリプルの種数"},
+    {"ci", nomatchLogrdmTri["ci"] // Length},
+    {"cs", nomatchLogrdmTri["cs"] // Length},
+    {"la", nomatchLogrdmTri["la"] // Length},
+    {"wk", nomatchLogrdmTri["wk"] // Length},
+    {"基盤", "重複ユーザーストーリー(SVOおよびroleが完全マッチ)の種数"},
+    {"gr", usCount["gr"] - usCount["gr", "uniq"]},
+    {"dg", usCount["dg"] - usCount["dg", "uniq"]},
+    {"dp", usCount["dp"] - usCount["dp", "uniq"]},
+    {"ci", usCount["ci"] - usCount["ci", "uniq"]},
+    {"cs", usCount["cs"] - usCount["cs", "uniq"]},
+    {"la", usCount["la"] - usCount["la", "uniq"]},
+    {"wk", usCount["wk"] - usCount["wk", "uniq"]}
+    }) // TableForm
+Export[basedir <> "D=" <> date <> "/T=4/_story/" <> "summary_US_" <> 
+  date <> ".xlsx", summaryUS]
+
+Print["END"]
