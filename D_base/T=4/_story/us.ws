@@ -339,4 +339,294 @@ Map[#[[1]] &, revNoMatchCase["wk"]]
 
 (* Graph *)
 Print["Graph"]
+"/Volumes/home/NII/togo-log/rcoslogs/log/D=" <> date <> \
+"/T=4/_story/storyGrIdxFlDs3." <> date <> ".save"
+Get["/Volumes/home/NII/togo-log/rcoslogs/log/D=" <> date <> 
+   "/T=4/_story/storyGrIdxFlDs3." <> date <> ".save"];
+(dstEdgeListList[4][date] = 
+   Map[Map[#[[2]] &, EdgeList[#[[3]]]] &, 
+    storyGrIdxFlDs3[4][date]]) // Length
+(vocListList[4][date] = 
+   dstEdgeListList[4][date] /. vocRl["all:path"]) // Length
+(vocListFlt[4][date] = 
+   Flatten[dstEdgeListList[4][date] /. 
+     vocRl["all:path"]]) // Dimensions
+
+(*voc-term vs. ontology-term match*)
+quartPreCount = (quartPre = 
+    Map[StringSplit[#[[1]], {":", ","}] &, vocListFlt[4][date]]) // 
+  Length
+quartCount = (quart = Cases[quartPre, x_ /; Head[x] == List]) // 
+  Length
+Cases[quartPre, x_ /; Head[x] == StringSplit] // Length
+quartCount/quartPreCount // N
+Map[Length, quart] // Tally
+(vocQ["ci"] = Cases[quart, {"ci", __}]) // Length
+(vocQ["cs"] = Cases[quart, {"cs", __}]) // Length
+(vocQ["la"] = Cases[quart, {"la", __}]) // Length
+(vocQ["wk"] = Cases[quart, {"wk", __}]) // Length
+
+(** match ci **)
+rdmMap["ci"][vocq_] := {vocq[[1]], 
+  vocq[[2]] /. BaseRl["ci", "subject"], 
+  vocq[[3]] /. BaseRl["ci", "activity"], 
+  vocq[[4]] /. BaseRl["ci", "object"]}
+(rdmOtlQ["ci"] = Map[rdmMap["ci"][#] &, vocQ["ci"]]) // Length
+matchPos["ci"] = 
+  Position[rdmOtlQ["ci"], 
+   x_String /; StringTake[x, 3] == "rdm" || x == "--"];
+(matchPosGath["ci"] = 
+   Gather[matchPos["ci"], First[#1] == First[#2] &]) // Length
+(rdmOtlQTly["ci"] = Tally[rdmOtlQ["ci"]]) /. {"--" -> 
+    "rdm:--"} // TableForm
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmActivityToUS["ci"]] &, 
+ rdmOtlQTly["ci"]]
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmObjectToUS["ci"]] &, 
+ rdmOtlQTly["ci"]]
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["ci"], x_ /; x[[1, 2]] != "system"]] // Total
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["ci"], 
+   x_ /; x[[1, 2]] != 
+      "system" && (StringMatchQ[x[[1, 3]], 
+        RegularExpression["rdm:.*"]] || 
+       StringMatchQ[x[[1, 4]], 
+        RegularExpression["rdm:.*"]])]] // Total
+userStoryOtl["sel", "ci"]
+(rdmOtlS["ci"] = Map[#[[1, 2]] &, rdmOtlQTly["ci"]]) // Length
+Map[Position[userStoryOtl["sel", "ci"], #] &, rdmOtlS["ci"]]
+rdmOtlSMP["sel", "ci"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "ci"], #] &, 
+     rdmOtlS["ci"]], {_, _}, {2}]] // Union
+addPosS["ci"] = Table[i, {i, Length[userStoryOtl["sel", "ci"]]}]
+rdmOtlSMP["sel", "ci"] = Union[rdmOtlSMP["sel", "ci"], addPosS["ci"]]
+matchSinLog["ci", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "ci"]]], 
+  Map[# -> "S" &, rdmOtlSMP["sel", "ci"]]]
+(rdmOtlV["ci"] = Map[#[[1, 3]] &, rdmOtlQTly["ci"]]) // Length
+Map[Position[userStoryOtl["sel", "ci"], #] &, rdmOtlV["ci"]]
+rdmOtlVMP["sel", "ci"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "ci"], #] &, 
+     rdmOtlV["ci"]], {_, _}, {2}]] // Union
+matchVinLog["ci", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "ci"]]], 
+  Map[# -> "V" &, rdmOtlVMP["sel", "ci"]]]
+rdmOtlO["ci"] = Map[#[[1, 4]] &, rdmOtlQTly["ci"]]
+Map[Position[userStoryOtl["sel", "ci"], #] &, rdmOtlO["ci"]]
+rdmOtlOMP["sel", "ci"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "ci"], #] &, 
+     rdmOtlO["ci"]], {_, _}, {2}]] // Union
+matchOinLog["ci", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "ci"]]], 
+  Map[# -> "O" &, rdmOtlOMP["sel", "ci"]]]
+Union[rdmOtlVMP["sel", "ci"], rdmOtlOMP["sel", "ci"]]
+userStoryOtl["sel", "ci"][[
+ Union[rdmOtlVMP["sel", "ci"], rdmOtlOMP["sel", "ci"]]]]
+(nonappUS["ci"] = 
+   Delete[userStoryOtl["sel", "ci"], 
+    Map[{#} &, 
+     Union[rdmOtlVMP["sel", "ci"], 
+      rdmOtlOMP["sel", "ci"]]]]) // TableForm
+(usSVOMatch["sel", "ci"] = {Map[#[[1]] &, userStoryOtl["sel", "ci"]], 
+    matchSinLog["ci", date], matchVinLog["ci", date], 
+    matchOinLog["ci", date]}) // TableForm
+
+(** match cs **)
+rdmMap["cs"][vocq_] := {vocq[[1]], 
+  vocq[[2]] /. BaseRl["cs", "subject"], 
+  vocq[[3]] /. BaseRl["cs", "activity"], 
+  vocq[[4]] /. BaseRl["cs", "object"]}
+(rdmOtlQ["cs"] = Map[rdmMap["cs"][#] &, vocQ["cs"]]) // Length
+matchPos["cs"] = 
+  Position[rdmOtlQ["cs"], 
+   x_String /; StringTake[x, 3] == "rdm" || x == "--"];
+(matchPosGath["cs"] = 
+   Gather[matchPos["cs"], First[#1] == First[#2] &]) // Length
+(rdmOtlQTly["cs"] = Tally[rdmOtlQ["cs"]]) /. {"--" -> "rdm:--", 
+   Part[List_, _] -> "_no-option_"} // TableForm
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmActivityToUS["cs"]] &, 
+ rdmOtlQTly["cs"]]
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmObjectToUS["cs"]] &, 
+ rdmOtlQTly["cs"]]
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["cs"], x_ /; x[[1, 2]] != "system"]] // Total
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["cs"], 
+   x_ /; x[[1, 2]] != 
+      "system" && (StringMatchQ[x[[1, 3]], 
+        RegularExpression["rdm:.*"]] || 
+       StringMatchQ[x[[1, 4]], 
+        RegularExpression["rdm:.*"]])]] // Total
+(rdmOtlS["cs"] = Map[#[[1, 2]] &, rdmOtlQTly["cs"]])
+Map[Position[userStoryOtl["sel", "cs"], #] &, rdmOtlS["cs"]]
+rdmOtlSMP["sel", "cs"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "cs"], #] &, 
+     rdmOtlS["cs"]], {_, _}, {2}]] // Union
+addPosS["cs"] = Table[i, {i, Length[userStoryOtl["sel", "cs"]]}]
+rdmOtlSMP["sel", "cs"] = Union[rdmOtlSMP["sel", "cs"], addPosS["cs"]]
+matchSinLog["cs", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "cs"]]], 
+  Map[# -> "S" &, rdmOtlSMP["sel", "cs"]]]
+rdmOtlV["cs"] = Map[#[[1, 3]] &, rdmOtlQTly["cs"]]
+rdmOtlVMP["sel", "cs"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "cs"], #] &, 
+     rdmOtlV["cs"]], {_, _}, {2}]] // Union
+matchVinLog["cs", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "cs"]]], 
+  Map[# -> "V" &, rdmOtlVMP["sel", "cs"]]]
+rdmOtlO["cs"] = Map[#[[1, 4]] &, rdmOtlQTly["cs"]]
+rdmOtlOMP["sel", "cs"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "cs"], #] &, 
+     rdmOtlO["cs"]], {_, _}, {2}]] // Union
+matchOinLog["cs", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "cs"]]], 
+  Map[# -> "O" &, rdmOtlOMP["sel", "cs"]]]
+userStoryOtl["sel", "cs"][[
+ Union[rdmOtlVMP["sel", "cs"], rdmOtlOMP["sel", "cs"]]]]
+nonappUS["cs"] = 
+ Delete[userStoryOtl["sel", "cs"], 
+  Map[{#} &, Union[rdmOtlVMP["sel", "cs"], rdmOtlOMP["sel", "cs"]]]]
+(usSVOMatch["sel", "cs"] = {Map[#[[1]] &, userStoryOtl["sel", "cs"]], 
+    matchSinLog["cs", date], matchVinLog["cs", date], 
+    matchOinLog["cs", date]}) // TableForm
+
+(** match la **)
+rdmMap["la"][vocq_] := {vocq[[1]], 
+  vocq[[2]] /. BaseRl["la", "subject"], 
+  vocq[[3]] /. BaseRl["la", "activity"], 
+  vocq[[4]] /. BaseRl["la", "object"]}
+(rdmOtlQ["la"] = Map[rdmMap["la"][#] &, vocQ["la"]]) // Length
+matchPos["la"] = 
+  Position[rdmOtlQ["la"], 
+   x_String /; StringTake[x, 3] == "rdm" || x == "--"];
+(matchPosGath["la"] = 
+   Gather[matchPos["la"], First[#1] == First[#2] &]) // Length
+(rdmOtlQTly["la"] = Tally[rdmOtlQ["la"]]) /. {"--" -> "rdm:--", 
+   Part[List_, _] -> "_no-option_"} // TableForm
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmActivityToUS["la"]] &, 
+ rdmOtlQTly["la"]]
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmObjectToUS["la"]] &, 
+ rdmOtlQTly["la"]]
+Cases[rdmOtlQTly["la"], x_ /; x[[1, 2]] != "system"]
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["la"], x_ /; x[[1, 2]] != "system"]] // Total
+Cases[rdmOtlQTly["la"], 
+ x_ /; x[[1, 2]] != 
+    "system" && (StringMatchQ[x[[1, 3]], 
+      RegularExpression["rdm:.*"]] || 
+     StringMatchQ[x[[1, 4]], RegularExpression["rdm:.*"]])]
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["la"], 
+   x_ /; x[[1, 2]] != 
+      "system" && (StringMatchQ[x[[1, 3]], 
+        RegularExpression["rdm:.*"]] || 
+       StringMatchQ[x[[1, 4]], 
+        RegularExpression["rdm:.*"]])]] // Total
+(rdmOtlS["la"] = Map[#[[1, 2]] &, rdmOtlQTly["la"]])
+rdmOtlSMP["sel", "la"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "la"], #] &, 
+     rdmOtlS["la"]], {_, _}, {2}]] // Union
+addPosS["la"] = Table[i, {i, Length[userStoryOtl["sel", "la"]]}]
+rdmOtlSMP["sel", "la"] = Union[rdmOtlSMP["sel", "la"], addPosS["la"]]
+matchSinLog["la", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "la"]]], 
+  Map[# -> "S" &, rdmOtlSMP["sel", "la"]]]
+rdmOtlV["la"] = Map[#[[1, 3]] &, rdmOtlQTly["la"]]
+rdmOtlVMP["sel", "la"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "la"], #] &, 
+     rdmOtlV["la"]], {_, _}, {2}]] // Union
+matchVinLog["la", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "la"]]], 
+  Map[# -> "V" &, rdmOtlVMP["sel", "la"]]]
+rdmOtlO["la"] = Map[#[[1, 4]] &, rdmOtlQTly["la"]]
+rdmOtlOMP["sel", "la"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "la"], #] &, 
+     rdmOtlO["la"]], {_, _}, {2}]] // Union
+matchOinLog["la", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "la"]]], 
+  Map[# -> "O" &, rdmOtlOMP["sel", "la"]]]
+userStoryOtl["sel", "la"][[
+ Union[rdmOtlVMP["sel", "la"], rdmOtlOMP["sel", "la"]]]]
+nonappUS["la"] = 
+ Delete[userStoryOtl["sel", "la"], 
+  Map[{#} &, Union[rdmOtlVMP["sel", "la"], rdmOtlOMP["sel", "la"]]]]
+(usSVOMatch["sel", "la"] = {Map[#[[1]] &, userStoryOtl["sel", "la"]], 
+    matchSinLog["la", date], matchVinLog["la", date], 
+    matchOinLog["la", date]}) // TableForm
+
+(** match wk **)
+rdmMap["wk"][vocq_] := {vocq[[1]], 
+  vocq[[2]] /. BaseRl["wk", "subject"], 
+  vocq[[3]] /. BaseRl["wk", "activity"], 
+  vocq[[4]] /. BaseRl["wk", "object"]}
+(rdmOtlQ["wk"] = Map[rdmMap["wk"][#] &, vocQ["wk"]]) // Length
+matchPos["wk"] = 
+  Position[rdmOtlQ["wk"], 
+   x_String /; StringTake[x, 3] == "rdm" || x == "--"];
+(matchPosGath["wk"] = 
+   Gather[matchPos["wk"], First[#1] == First[#2] &]) // Length
+(rdmOtlQTly["wk"] = Tally[rdmOtlQ["wk"]]) /. {"--" -> "rdm:--", 
+   Part[List_, _] -> "_no-option_"} // TableForm
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmActivityToUS["wk"]] &, 
+ rdmOtlQTly["wk"]]
+Map[#[[1, 3]] /. Map[#[[2]] &, rdmObjectToUS["wk"]] &, 
+ rdmOtlQTly["wk"]]
+Cases[rdmOtlQTly["wk"], x_ /; x[[1, 2]] != "system"]
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["wk"], x_ /; x[[1, 2]] != "system"]] // Total
+Cases[rdmOtlQTly["wk"], 
+ x_ /; x[[1, 2]] != 
+    "system" && (StringMatchQ[x[[1, 3]], 
+      RegularExpression["rdm:.*"]] || 
+     StringMatchQ[x[[1, 4]], RegularExpression["rdm:.*"]])]
+Map[#[[2]] &, 
+  Cases[rdmOtlQTly["wk"], 
+   x_ /; x[[1, 2]] != 
+      "system" && (StringMatchQ[x[[1, 3]], 
+        RegularExpression["rdm:.*"]] || 
+       StringMatchQ[x[[1, 4]], 
+        RegularExpression["rdm:.*"]])]] // Total
+(rdmOtlS["wk"] = Map[#[[1, 2]] &, rdmOtlQTly["wk"]])
+rdmOtlSMP["sel", "wk"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "wk"], #] &, 
+     rdmOtlS["wk"]], {_, _}, {2}]] // Union
+addPosS["wk"] = Table[i, {i, Length[userStoryOtl["sel", "wk"]]}]
+rdmOtlSMP["sel", "wk"] = Union[rdmOtlSMP["sel", "wk"], addPosS["wk"]]
+matchSinLog["wk", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "wk"]]], 
+  Map[# -> "S" &, rdmOtlSMP["sel", "wk"]]]
+rdmOtlV["wk"] = Map[#[[1, 3]] &, rdmOtlQTly["wk"]]
+rdmOtlVMP["sel", "wk"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "wk"], #] &, 
+     rdmOtlV["wk"]], {_, _}, {2}]] // Union
+matchVinLog["wk", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "wk"]]], 
+  Map[# -> "V" &, rdmOtlVMP["sel", "wk"]]]
+rdmOtlO["wk"] = Map[#[[1, 4]] &, rdmOtlQTly["wk"]]
+rdmOtlOMP["sel", "wk"] = 
+ Map[#[[1]] &, 
+   Cases[Map[Position[userStoryOtl["sel", "la"], #] &, 
+     rdmOtlO["wk"]], {_, _}, {2}]] // Union
+matchOinLog["wk", date] = 
+ ReplacePart[Table["no-match", Length[userStoryOtl["sel", "wk"]]], 
+  Map[# -> "O" &, rdmOtlOMP["sel", "wk"]]]
+userStoryOtl["sel", "wk"][[
+ Union[rdmOtlVMP["sel", "wk"], rdmOtlOMP["sel", "wk"]]]]
+nonappUS["wk"] = 
+ Delete[userStoryOtl["sel", "wk"], 
+  Map[{#} &, Union[rdmOtlVMP["sel", "wk"], rdmOtlOMP["sel", "wk"]]]]
+(usSVOMatch["sel", "wk"] = {Map[#[[1]] &, userStoryOtl["sel", "wk"]], 
+    matchSinLog["wk", date], matchVinLog["wk", date], 
+    matchOinLog["wk", date]}) // TableForm
 
