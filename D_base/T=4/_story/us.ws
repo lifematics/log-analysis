@@ -52,3 +52,63 @@ BaseRlrev["ci", "object"] =
   Append[Map[#[[7]] -> #[[6]] &, xlssheetBase["ci"]] // Union, 
    "rdm:Resource" -> "many-match"], Rule["UD", _]]
 
+(** cs **)
+Print["sheet: cs"]
+xlssheetBase["cs"] = Cases[xlssheet, x_ /; x[[1]] == "cs"]
+BaseRl["cs", "subject"] = 
+ Map[#[[2]] -> #[[3]] &, xlssheetBase["cs"]] // Union
+BaseRlrev["cs", "subject"] = 
+ Append[Map[#[[3]] -> #[[2]] &, xlssheetBase["cs"]] // Union, 
+  "rdm:Person" -> "many-match"]
+BaseRl["cs", "activity"] = 
+ Map[#[[4]] -> #[[5]] &, xlssheetBase["cs"]] // Union
+BaseRlrev["cs", "activity"] = 
+ DeleteCases[Map[#[[5]] -> #[[4]] &, xlssheetBase["cs"]] // Union, 
+  Rule["UD", _]]
+BaseRl["cs", "object"] = 
+ Map[#[[6]] -> #[[7]] &, xlssheetBase["cs"]] // Union
+BaseRlrev["cs", "object"] = 
+ DeleteCases[
+  Append[Map[#[[7]] -> #[[6]] &, xlssheetBase["cs"]] // Union, 
+   "rdm:Resource" -> "many-match"], Rule["UD", _]]
+
+(** la **)
+Print["sheet: la"]
+xlssheetBase["la"] = Cases[xlssheet, x_ /; x[[1]] == "la"]
+BaseRl["la", "subject"] = 
+ Map[#[[2]] -> #[[3]] &, xlssheetBase["la"]] // Union
+BaseRlrev["la", "subject"] = 
+ Append[Map[#[[3]] -> #[[2]] &, xlssheetBase["la"]] // Union, 
+  "rdm:Person" -> "many-match"]
+BaseRl["la", "activity"] = 
+ Map[#[[4]] -> #[[5]] &, xlssheetBase["la"]] // Union
+BaseRlrev["la", "activity"] = 
+ DeleteCases[Map[#[[5]] -> #[[4]] &, xlssheetBase["la"]] // Union, 
+  Rule["UD", _]]
+BaseRl["la", "object"] = 
+ Map[#[[6]] -> #[[7]] &, xlssheetBase["la"]] // Union
+BaseRlrev["la", "object"] = 
+ DeleteCases[
+  Append[Map[#[[7]] -> #[[6]] &, xlssheetBase["la"]] // Union, 
+   "rdm:Resource" -> "many-match"], Rule["UD", _]]
+
+(** wk **)
+Print["sheet: wk"]
+xlssheetBase["wk"] = Cases[xlssheet, x_ /; x[[1]] == "wk"]
+BaseRl["wk", "subject"] = 
+ Map[#[[2]] -> #[[3]] &, xlssheetBase["wk"]] // Union
+BaseRlrev["wk", "subject"] = 
+ Append[Map[#[[3]] -> #[[2]] &, xlssheetBase["wk"]] // Union, 
+  "rdm:Person" -> "many-match"]
+BaseRl["wk", "activity"] = 
+ Map[#[[4]] -> #[[5]] &, xlssheetBase["wk"]] // Union
+BaseRlrev["wk", "activity"] = 
+ DeleteCases[Map[#[[5]] -> #[[4]] &, xlssheetBase["wk"]] // Union, 
+  Rule["UD", _]]
+BaseRl["wk", "object"] = 
+ Map[#[[6]] -> #[[7]] &, xlssheetBase["wk"]] // Union
+BaseRlrev["wk", "object"] = 
+ DeleteCases[
+  Append[Map[#[[7]] -> #[[6]] &, xlssheetBase["wk"]] // Union, 
+   "rdm:Resource" -> "many-match"], Rule["UD", _]]
+
