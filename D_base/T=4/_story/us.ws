@@ -274,4 +274,69 @@ usDupRl["All"] =
    usDupRl["cs"], usDupRl["la"], usDupRl["wk"], {"番号" -> "重複"}}]
 
 
+(** appearance of ontology term **)
+USSubject["all"] = userStoryOtl["sel"][[All, 4]] // Union
+USActivity["all"] = 
+ Select[userStoryOtl["sel"][[All, 5]] // Union, StringLength[#] > 4 &]
+USObject["all"] = 
+ DeleteCases[
+  Select[userStoryOtl["sel"][[All, 6]] // Union, 
+   StringLength[#] > 4 &], 
+  x_ /; StringMatchQ[x, RegularExpression["rdm:なし.*"]]]
+Complement[USSubject["all"], APSubject["all"]]
+Complement[USActivity["all"], APActivity["all"]]
+Complement[USObject["all"], APObject["all"]]
+
+(** Reverse match **)
+Print["Reverse match"]
+(revMatch[
+    "ci"] = (Map[{#[[1]], #[[4]] /. 
+        BaseRlrev["ci", "subject"], #[[5]] /. 
+        BaseRlrev["ci", "activity"], #[[6]] /. 
+        BaseRlrev["ci", "object"]} &, 
+     userStoryOtl["sel", "ci"]])) // TableForm
+(revNoMatchCase["ci"] = 
+   Cases[revMatch["ci"], 
+    x_ /; StringMatchQ[x[[3]], RegularExpression["rdm:.*"]] && 
+      StringMatchQ[x[[4]], RegularExpression["rdm:.*"]]]) // Length
+Map[#[[1]] &, revNoMatchCase["ci"]]
+
+(revMatch[
+    "cs"] = (Map[{#[[1]], #[[4]] /. 
+        BaseRlrev["cs", "subject"], #[[5]] /. 
+        BaseRlrev["cs", "activity"], #[[6]] /. 
+        BaseRlrev["cs", "object"]} &, 
+     userStoryOtl["sel", "cs"]])) // TableForm
+(revNoMatchCase["cs"] = 
+   Cases[revMatch["cs"], 
+    x_ /; StringMatchQ[x[[3]], RegularExpression["rdm:.*"]] && 
+      StringMatchQ[x[[4]], RegularExpression["rdm:.*"]]]) // Length
+Map[#[[1]] &, revNoMatchCase["cs"]]
+
+(revMatch[
+    "la"] = (Map[{#[[1]], #[[4]] /. 
+        BaseRlrev["la", "subject"], #[[5]] /. 
+        BaseRlrev["la", "activity"], #[[6]] /. 
+        BaseRlrev["la", "object"]} &, 
+     userStoryOtl["sel", "la"]])) // TableForm
+(revNoMatchCase["la"] = 
+   Cases[revMatch["la"], 
+    x_ /; StringMatchQ[x[[3]], RegularExpression["rdm:.*"]] && 
+      StringMatchQ[x[[4]], RegularExpression["rdm:.*"]]]) // Length
+Map[#[[1]] &, revNoMatchCase["la"]]
+
+(revMatch[
+    "wk"] = (Map[{#[[1]], #[[4]] /. 
+        BaseRlrev["wk", "subject"], #[[5]] /. 
+        BaseRlrev["wk", "activity"], #[[6]] /. 
+        BaseRlrev["wk", "object"]} &, 
+     userStoryOtl["sel", "wk"]])) // TableForm
+(revNoMatchCase["wk"] = 
+   Cases[revMatch["wk"], 
+    x_ /; StringMatchQ[x[[3]], RegularExpression["rdm:.*"]] && 
+      StringMatchQ[x[[4]], RegularExpression["rdm:.*"]]]) // Length
+Map[#[[1]] &, revNoMatchCase["wk"]]
+
+(* Graph *)
+Print["Graph"]
 
