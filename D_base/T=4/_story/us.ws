@@ -32,4 +32,23 @@ ontologyfile = \
 xls = Import[ontologyfile];
 (xlssheet = xls[[1]]) // Dimensions
 
+(** ci **)
+Print["sheet: ci"]
+xlssheetBase["ci"] = Cases[xlssheet, x_ /; x[[1]] == "ci"]
+BaseRl["ci", "subject"] = 
+ Map[#[[2]] -> #[[3]] &, xlssheetBase["ci"]] // Union
+BaseRlrev["ci", "subject"] = 
+ Append[Map[#[[3]] -> #[[2]] &, xlssheetBase["ci"]] // Union, 
+  "rdm:Person" -> "many-match"]
+BaseRl["ci", "activity"] = 
+ Map[#[[4]] -> #[[5]] &, xlssheetBase["ci"]] // Union
+BaseRlrev["ci", "activity"] = 
+ DeleteCases[Map[#[[5]] -> #[[4]] &, xlssheetBase["ci"]] // Union, 
+  Rule["UD", _]]
+BaseRl["ci", "object"] = 
+ Map[#[[6]] -> #[[7]] &, xlssheetBase["ci"]] // Union
+BaseRlrev["ci", "object"] = 
+ DeleteCases[
+  Append[Map[#[[7]] -> #[[6]] &, xlssheetBase["ci"]] // Union, 
+   "rdm:Resource" -> "many-match"], Rule["UD", _]]
 
