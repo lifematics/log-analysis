@@ -5,7 +5,7 @@ Protect[undefined]
 
 (* voc data *)
 Print["voc data"]
-vocrldir = "/Users/kouamano/gitsrc/log-analysis/voc_V2"
+vocrldir = "/Users/kouamano/gitsrc/log-analysis/voc"
 vocRlFiles = FileNames[vocrldir <> "/*rl.wl"]
 (vocRlList = Map[Get, vocRlFiles]) // Length
 (vocRl["all:path"] = Apply[Join, vocRlList]) // Dimensions
@@ -111,4 +111,23 @@ BaseRlrev["wk", "object"] =
  DeleteCases[
   Append[Map[#[[7]] -> #[[6]] &, xlssheetBase["wk"]] // Union, 
    "rdm:Resource" -> "many-match"], Rule["UD", _]]
+
+(** extract mapping terms **)
+Print["map terms"]
+APSubject["all"] = 
+ Select[Drop[xlssheet, 1][[All, 3]] // Union, StringLength[#] > 0 &]
+APActivity["all"] = 
+ Select[Drop[xlssheet, 1][[All, 5]] // Union, StringLength[#] > 0 &]
+APObject["all"] = 
+ Select[Drop[xlssheet, 1][[All, 7]] // Union, StringLength[#] > 0 &]
+APvocSubject["all"] = 
+ Select[Drop[xlssheet[[2 ;; 50]], 1][[All, 2]] // Union, 
+  StringLength[#] > 0 &]
+APvocActivity["all"] = 
+ Select[Drop[xlssheet, 1][[All, 4]] // Union, StringLength[#] > 0 &]
+APvocObject["all"] = 
+ Select[Drop[xlssheet, 1][[All, 6]] // Union, StringLength[#] > 0 &]
+Complement[vocSubject["all"], APvocSubject["all"]]
+Complement[vocActivity["all"], APvocActivity["all"]]
+Complement[vocSubject["all"], APvocSubject["all"]]
 
