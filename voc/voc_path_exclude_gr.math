@@ -1,0 +1,96 @@
+(pathEff["gr"]["20240824"] = 
+   Cases[path["gr"]["20240824"], 
+    x_ /; StringMatchQ[x, RegularExpression[".*css$"]] == 
+      False ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, RegularExpression[".*png/*$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, RegularExpression[".*js$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, RegularExpression[".*jpg$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, RegularExpression[".*\\.csl\\?.*"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/_/.*"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/fonts/.*"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression[
+         "https://rdm.nii.ac.jp/embedded-wayf_js.*"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*ico$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/actuator.*"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/static.*"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/render.*"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/\\.env$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*\\.php$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*\\.gif$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*\\.yml$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*\\.yaml$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*\\.env$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*\\.map$"]] == 
+       False) ]) // Length
+(pathEff["gr"]["20240824"] = 
+   Cases[pathEff["gr"]["20240824"], 
+    x_ /; (StringMatchQ[x, 
+        RegularExpression["https://rdm.nii.ac.jp/.*\\.properties$"]] ==
+        False) ]) // Length
