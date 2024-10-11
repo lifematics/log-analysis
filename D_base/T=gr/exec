@@ -1,6 +1,7 @@
 while read file;
 do
-grep log\.gr[0-9] ../$file |\
+#grep 'log\.gr[0-9].*wa.*\.yobi' ../$file |\
+grep 'log\.gr[0-9].*wa.*' ../$file |\
 #grep -e '\"code\":\"200'
 #grep -v -e 'path\":\"/favicon.ico' |\
 #grep -v -e 'path\":\"/static' |\
